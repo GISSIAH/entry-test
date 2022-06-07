@@ -7,6 +7,7 @@ import {
 import Home from './pages/home';
 import { client } from './api/apiClient';
 import Navbar from './components/nav/navbar';
+import ProductPage from './pages/productPage';
 
 
 
@@ -30,6 +31,8 @@ export default class App extends Component {
               </div>
             }>
               <Route index element={<Home name="SKI" currency={this.state.currency} />} />
+              <Route exact path="/product/:id" element={<ProductPage/>}  />
+              
             </Route>
           </Routes>
         </BrowserRouter>

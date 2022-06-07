@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import styled from "styled-components"
 export default class Product extends Component {
     render() {
@@ -22,11 +23,17 @@ export default class Product extends Component {
         const selectedCurrencyPrice = this.props.product.prices.filter(price => price.currency.symbol === this.props.currency.symbol)
 
         return (
-            <Product>
-                <ProductImage src={this.props.product.gallery[0]} />
-                <ProductTitle>{this.props.product.name}</ProductTitle>
-                <ProductPrice>{selectedCurrencyPrice[0].currency.symbol + " " + selectedCurrencyPrice[0].amount}</ProductPrice>
-            </Product>
+            <Link to={"/product/"+this.props.product.id}>
+                <Product>
+                    <ProductImage src={this.props.product.gallery[0]} />
+                    <ProductTitle>{this.props.product.name}</ProductTitle>
+                    <ProductPrice>{selectedCurrencyPrice[0].currency.symbol + " " + selectedCurrencyPrice[0].amount}</ProductPrice>
+                </Product>
+            </Link>
+
+
+
+
         )
     }
 }
