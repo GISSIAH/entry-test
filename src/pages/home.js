@@ -35,7 +35,7 @@ export default class Home extends Component {
         })
     }
     render() {
-
+        
         const Product = styled.div`
             display: flex;
             flex-direction: column;
@@ -53,10 +53,6 @@ export default class Home extends Component {
             font-weight:500;
             font-size:18px ;
         `
-
-
-
-
         const CategoryTitle = styled.h2`
         padding-left: 170px;
         font-weight: 400;
@@ -74,14 +70,16 @@ export default class Home extends Component {
                 <CategoryTitle>
                     Clothes
                 </CategoryTitle>
+                {this.props.currency.symbol}
                 <ProductList>
                     {
                         this.state.clothes.map(cloth=>{
+                            const selectedCurrencyPrice = cloth.prices.filter(price => price.currency.symbol === this.props.currency.symbol)
                             return(
                                 <Product>
                                     <ProductImage src={cloth.gallery[0]}/>
                                     <ProductTitle>{cloth.name}</ProductTitle>
-                                    <ProductPrice>{cloth.prices[0].amount}</ProductPrice>
+                                    <ProductPrice>{selectedCurrencyPrice[0].currency.symbol + " " + selectedCurrencyPrice[0].amount}</ProductPrice>
                                 </Product>
                             )
                         })
