@@ -1,11 +1,8 @@
 import './App.css';
 import React, { Component } from 'react'
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import Layout from './components/layout/layout';
 import {
   ApolloProvider,
-  useQuery,
-  gql
 } from "@apollo/client";
 import Home from './pages/home';
 import { client } from './api/apiClient';

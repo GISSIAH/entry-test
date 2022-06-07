@@ -70,7 +70,6 @@ export default class Home extends Component {
                 <CategoryTitle>
                     Clothes
                 </CategoryTitle>
-                {this.props.currency.symbol}
                 <ProductList>
                     {
                         this.state.clothes.map(cloth=>{
