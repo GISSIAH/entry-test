@@ -14,8 +14,8 @@ import ProductPage from './pages/productPage';
 export default class App extends Component {
   state = {
     currency: {
-      symbol:"",
-      currency:""
+      symbol:"$",
+      currency:"USD"
     }
   }
   render() {
@@ -31,7 +31,8 @@ export default class App extends Component {
               </div>
             }>
               <Route index element={<Home name="SKI" currency={this.state.currency} />} />
-              <Route exact path="/product/:id" element={<ProductPage/>}  />
+              <Route exact path="/product/:id" element={<ProductPage currency={this.state.currency}/>} 
+               />
               
             </Route>
           </Routes>
