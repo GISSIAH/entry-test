@@ -79,7 +79,7 @@ export default class Navbar extends Component {
             display:flex;
             gap:5px;
             justify-content:center;
-            
+            cursor:pointer ;
             &:hover{
                 background:#EEEEEE;
             }

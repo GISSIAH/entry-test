@@ -6,6 +6,10 @@ export default class Product extends Component {
         const Product = styled.div`
             display: flex;
             flex-direction: column;
+            padding:1 5px ;
+            &:hover{
+               box-shadow: rgba(0, 0, 0, 0.35) 1px 5px 15px; 
+            }
 
         `
         const ProductTitle = styled.p`
