@@ -8,8 +8,10 @@ import Home from './pages/home';
 import { client } from './api/apiClient';
 import Navbar from './components/nav/navbar';
 import ProductPage from './pages/productPage';
-
-
+//import { configureStore } from 'redux';
+import { Provider } from 'react-redux';
+import Reducer from './components/reducer/reducer'
+import CartPage from './pages/cart';
 
 export default class App extends Component {
   state = {
@@ -18,27 +20,31 @@ export default class App extends Component {
       currency:"USD"
     }
   }
+  //store = configureStore(Reducer)
   render() {
     //console.log(this.state.currency);
     return (
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={
-              <div>
-                <Navbar parentCallback={this.handleCallback}/>
-                <Outlet />
-              </div>
-            }>
-              <Route index element={<Home name="SKI" currency={this.state.currency} />} />
-              <Route exact path="/product/:id" element={<ProductPage currency={this.state.currency}/>} 
-               />
-              
-            </Route>
-          </Routes>
-        </BrowserRouter>
+      
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={
+                <div>
+                  <Navbar parentCallback={this.handleCallback} />
+                  <Outlet />
+                </div>
+              }>
+                <Route index element={<Home name="SKI" currency={this.state.currency} />} />
+                <Route exact path="/product/:id" element={<ProductPage currency={this.state.currency} />}/>
+                <Route exact path="/cart" element={<CartPage/>} />
 
-      </ApolloProvider>
+              </Route>
+            </Routes>
+          </BrowserRouter>
+
+        </ApolloProvider>
+   
+      
 
 
     )

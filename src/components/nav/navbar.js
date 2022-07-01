@@ -112,9 +112,9 @@ export default class Navbar extends Component {
                             {
                                 this.currencies.map(item => {
                                     return (
-                                        <CurrencyListItemContainer onClick={() => {
+                                        <CurrencyListItemContainer on onClick={() => {
                                             this.selectCurrency(item)
-                                            this.setState({ symbol: item.symbol})
+                                            this.setState({ symbol: item.symbol,menuOpen:!this.state.menuOpen})
                                         }
                                         }>
                                             <CurrencyListItem>{item.symbol}</CurrencyListItem>

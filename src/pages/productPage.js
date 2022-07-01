@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 import { Component} from 'react';
 import styled from "styled-components"
 import { client } from '../api/apiClient';
-
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 class ProductPage extends Component{
     state = {
@@ -42,6 +42,7 @@ class ProductPage extends Component{
             `
 
         }).then(response => {
+            console.log(response.data.product);
             this.setState({
                 product: [response.data.product],
                 selectedImage: response.data.product.gallery[0]
@@ -126,17 +127,14 @@ class ProductPage extends Component{
                 
                 border: 2px solid ;
             `
-
         const SwatchAttributeItem = styled.div`
                 width:36px;
                 height:36px;
                 background:${(props) => props.color};
             `
-
         const PriceSection = styled.div`
                 margin-top:30px;
             `
-
         const Price = styled.p`
                 margin:0;
                 font-weight:700;
@@ -144,7 +142,6 @@ class ProductPage extends Component{
                 font-family: 'Roboto Condensed', sans-serif;
                 margin:0px ;
             `
-
         const PriceAmount = styled.p`
                 font-size: 24px;
                 font-weight:700 ;
@@ -152,6 +149,7 @@ class ProductPage extends Component{
             `
         const AddToCartBtn = styled.button`
             margin-top:30px;
+            cursor:pointer ;
             background:#5ECE7B;
             height:50px;
             border:none ;
@@ -162,7 +160,6 @@ class ProductPage extends Component{
                 background: gray;
             }
         `
-
         const Description = styled.p`
             margin:0;
             margin-top:30px;
@@ -170,6 +167,8 @@ class ProductPage extends Component{
             font-weight:400;
             font-family: 'Roboto', sans-serif;
         `
+
+        //const cart = useSelector((state)=>state)
         return (
             <PageContainer>
                 {
