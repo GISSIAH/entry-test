@@ -6,6 +6,7 @@ export default class Product extends Component {
         const Product = styled.div`
             display: flex;
             flex-direction: column;
+            margin-bottom: 30px;
             padding:1 5px ;
             &:hover{
                box-shadow: rgba(0, 0, 0, 0.35) 1px 5px 15px; 
@@ -15,14 +16,17 @@ export default class Product extends Component {
         const ProductTitle = styled.p`
             font-weight:300;
             font-size:18px;
+            padding-left: 10px;
         `
         const ProductImage = styled.img`
-            width:354px;
-            height:330px;
+            aspect-ratio: 1 / 1;
+            //width:100%;
+            //height:330px;
         `
         const ProductPrice = styled.p`
             font-weight:500;
             font-size:18px ;
+            padding-left: 10px;
         `
         const selectedCurrencyPrice = this.props.product.prices.filter(price => price.currency.symbol === this.props.currency.symbol)
 

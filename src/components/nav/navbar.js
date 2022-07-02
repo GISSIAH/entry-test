@@ -72,7 +72,7 @@ export default class Navbar extends Component {
         margin-top:40px ;
         display:flex;
         flex-direction:column;
-        
+        z-index:9999px;
         box-shadow: 0 8px 8px -4px lightblue;
     `
         const CurrencyListItemContainer = styled.div`
