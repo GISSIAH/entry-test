@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-export default class CartPageItem extends Component {
+import {
+  changeQuantity,
+  removeFromCart,
+} from "../../redux/reducer/shopping/shopping-actions";
+import { connect } from "react-redux";
+class CartPageItem extends Component {
   state = {
     counter: 1,
     currentImage: 0,
@@ -24,9 +29,11 @@ export default class CartPageItem extends Component {
       display: flex;
       gap: 20px;
       z-index: 0;
+      height: 180px;
     `;
     const ImageContainer = styled.div`
       z-index: 0;
+      display: flex;
       height: 180px;
       width: 140px;
       position: relative;
@@ -81,9 +88,9 @@ export default class CartPageItem extends Component {
     `;
 
     const ItemImage = styled.img`
-      height: 180px;
-      width: 140px;
+      aspect-ratio: 1/1;
     `;
+
     const TextContainer = styled.div`
       display: flex;
       flex-direction: column;
@@ -145,9 +152,9 @@ export default class CartPageItem extends Component {
         <Divider />
         <ItemContent>
           <TextContainer>
-            <ProductBrand>Apollo</ProductBrand>
-            <ProductName>Jean shorts</ProductName>
-            <PriceAmount>$50.00</PriceAmount>
+            <ProductBrand>{this.props.product.brand}</ProductBrand>
+            <ProductName>{this.props.product.name}</ProductName>
+            <PriceAmount>{this.props.product.price}</PriceAmount>
             <Attributes>
               {this.props.product.attributes.map((attribute) => {
                 if (attribute.type === "swatch") {
@@ -192,15 +199,26 @@ export default class CartPageItem extends Component {
             <QuantityControlContainer>
               <QuantityControl
                 onClick={() => {
-                  this.setState({ counter: this.state.counter + 1 });
+                  //this.setState({ counter: this.state.counter + 1 });
+                  this.props.changeQuantity(
+                    this.props.product.id,
+                    this.props.product.qty + 1
+                  );
                 }}
               >
                 +
               </QuantityControl>
-              <Quantity>{this.state.counter}</Quantity>
+              <Quantity>{this.props.product.qty}</Quantity>
               <QuantityControl
                 onClick={() => {
-                  this.setState({ counter: this.state.counter - 1 });
+                  if (this.props.product.qty - 1 <= 0) {
+                    this.props.removeFromCart(this.props.product.id);
+                  } else {
+                    this.props.changeQuantity(
+                      this.props.product.id,
+                      this.props.product.qty - 1
+                    );
+                  }
                 }}
               >
                 -
@@ -209,7 +227,7 @@ export default class CartPageItem extends Component {
             <ImageContainer>
               <ImageArrowContainer>
                 <ImageArrow
-                    active={(this.state.currentImage === 0) ? true :false}
+                  active={this.state.currentImage === 0 ? true : false}
                   onClick={() => {
                     if (this.state.currentImage !== 0) {
                       this.setState({
@@ -221,7 +239,12 @@ export default class CartPageItem extends Component {
                   <BsChevronLeft size={20} color="white" />
                 </ImageArrow>
                 <ImageArrow
-                    active={(this.state.currentImage === this.props.product.gallery.length-1) ? true :false}
+                  active={
+                    this.state.currentImage ===
+                    this.props.product.gallery.length - 1
+                      ? true
+                      : false
+                  }
                   onClick={() => {
                     if (
                       this.state.currentImage !==
@@ -247,3 +270,11 @@ export default class CartPageItem extends Component {
     );
   }
 }
+
+const mapStateToProps = (dispatch) => {
+  return {
+    changeQuantity: (id, value) => dispatch(changeQuantity(id, value)),
+    removeFromCart: (id) => dispatch(removeFromCart(id)),
+  };
+};
+export default connect(null, mapStateToProps)(CartPageItem);

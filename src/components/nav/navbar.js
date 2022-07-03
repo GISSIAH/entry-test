@@ -5,6 +5,7 @@ import { FiShoppingCart } from "react-icons/fi"
 import { BsCurrencyDollar, BsCurrencyYen, BsCurrencyEuro } from "react-icons/bs"
 import { MdOutlineArrowDropDown } from "react-icons/md"
 import { RiArrowDropUpLine } from "react-icons/ri"
+import { Link } from 'react-router-dom'
 
 export default class Navbar extends Component {
     state = {
@@ -96,7 +97,7 @@ export default class Navbar extends Component {
                     {
                         navItemList.map((navItem,navItemKey) => {
                             return (
-                                <NavItem key={navItemKey}>{navItem.title}</NavItem>
+                                <NavItem key={navItemKey}><Link to="/cart">{navItem.title}</Link></NavItem>
                             )
                         })
                     }

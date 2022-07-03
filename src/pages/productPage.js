@@ -28,6 +28,13 @@ class ProductPage extends Component {
                     symbol
                     }
                 }
+                attributes{
+                  name
+                  type
+                  items{
+                    value
+                  }
+                }
                 }
             }
             }
