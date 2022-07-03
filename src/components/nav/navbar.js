@@ -94,9 +94,9 @@ export default class Navbar extends Component {
             <NavWrapper>
                 <NavLeftGroup>
                     {
-                        navItemList.map(navItem => {
+                        navItemList.map((navItem,navItemKey) => {
                             return (
-                                <NavItem>{navItem.title}</NavItem>
+                                <NavItem key={navItemKey}>{navItem.title}</NavItem>
                             )
                         })
                     }
@@ -110,9 +110,9 @@ export default class Navbar extends Component {
                         </div>
                         {this.state.menuOpen ? <CurrencyListContainer>
                             {
-                                this.currencies.map(item => {
+                                this.currencies.map((item,navMenuKey) => {
                                     return (
-                                        <CurrencyListItemContainer on onClick={() => {
+                                        <CurrencyListItemContainer key={navMenuKey} onClick={() => {
                                             this.selectCurrency(item)
                                             this.setState({ symbol: item.symbol,menuOpen:!this.state.menuOpen})
                                         }

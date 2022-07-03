@@ -3,13 +3,47 @@ import styled from "styled-components"
 import ProductList from '../components/product/productList'
 import { client } from '../api/apiClient'
 import { gql } from '@apollo/client'
-export default class Home extends Component {
+import { setProducts } from '../redux/reducer/shopping/shopping-actions'
+import {connect} from "react-redux"
+class Home extends Component {
     state = {
         category: "all",
         categories: [],
         categoryMenu: false
     }
+    getAllProducts= async ()=>{
+        const res = await client
+          .query({
+            query: gql`
+            query GetClothes{
+                category(input: { title: "all" }) {
+                    products {
+                    id
+                    name
+                    brand
+                    gallery
+                    prices {
+                        amount
+                        currency{
+                        symbol
+                        }
+                    }
+                    }
+                }
+                }
+            `,
+          })
+    
+          return  res
+          
+    }
+    
     componentDidMount = async () => {
+
+        this.getAllProducts().then(res=>{
+           
+            this.props.setProducts(res.data.category.products)
+        })
         const response = await client.query({
             query: gql`query GetCategories{
                     categories{
@@ -99,3 +133,13 @@ export default class Home extends Component {
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    
+    return {
+        setProducts: data => dispatch(setProducts(data))
+       
+    }
+ }
+
+ export default connect(null,mapDispatchToProps)(Home)

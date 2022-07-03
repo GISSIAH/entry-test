@@ -3,16 +3,42 @@ import { Component } from "react";
 import styled from "styled-components";
 import { client } from "../api/apiClient";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
+//import { useDispatch, useSelector } from "react-redux";
+import {connect} from "react-redux"
+import { addToCart, setProducts } from "../redux/reducer/shopping/shopping-actions";
 class ProductPage extends Component {
   state = {
     product: [],
     selectedImage: "",
   };
+  getAllProducts= async ()=>{
+    const res = await client
+      .query({
+        query: gql`
+        query GetClothes{
+            category(input: { title: "all" }) {
+                products {
+                id
+                name
+                brand
+                gallery
+                prices {
+                    amount
+                    currency{
+                    symbol
+                    }
+                }
+                }
+            }
+            }
+        `,
+      })
+
+      return  res
+      
+}
   componentDidMount = () => {
     //const { id } = this.props
-    console.log(this.props);
     client
       .query({
         query: gql`query GetProduct{
@@ -42,11 +68,14 @@ class ProductPage extends Component {
             `,
       })
       .then((response) => {
-        console.log(response.data.product);
         this.setState({
           product: [response.data.product],
           selectedImage: response.data.product.gallery[0],
         });
+        this.getAllProducts().then(res=>{
+           
+          this.props.setProducts(res.data.category.products)
+      })
       })
       .catch((err) => {
         alert(err);
@@ -178,18 +207,19 @@ class ProductPage extends Component {
     //const cart = useSelector((state)=>state)
     return (
       <PageContainer>
-        {this.state.product.map((product) => {
+        {this.state.product.map((product,i) => {
           const selectedCurrencyPrice = product.prices.filter(
             (price) => price.currency.symbol === this.props.currency.symbol
           );
           //console.log(this.props.currency);
           return (
-            <ProductContainer>
+            <ProductContainer key={i}>
               <LeftWrapper>
                 <ThumbnailContainer>
-                  {product.gallery.map((img) => {
+                  {product.gallery.map((img,key) => {
                     return (
                       <ImageThumbanail
+                        key={key}
                         src={img}
                         onClick={() => {
                           this.setState({ selectedImage: img });
@@ -207,18 +237,19 @@ class ProductPage extends Component {
                   <ProductName>{product.name}</ProductName>
                 </ProductDetailsTop>
                 <Attributes>
-                  {product.attributes.map((attribute) => {
+                  {product.attributes.map((attribute,index) => {
                     if (attribute.type === "swatch") {
                       return (
-                        <AtributeContainer>
+                        <AtributeContainer key={index}>
                           <AttributeTitle>
                             {attribute.name.toUpperCase()}
                           </AttributeTitle>
                           <AttributeValueList>
-                            {attribute.items.map((attrset) => {
+                            {attribute.items.map((attrset,swatchKey) => {
                               return (
                                 <SwatchAttributeItem
                                   color={attrset.value}
+                                  key={swatchKey}
                                 ></SwatchAttributeItem>
                               );
                             })}
@@ -227,14 +258,14 @@ class ProductPage extends Component {
                       );
                     } else {
                       return (
-                        <AtributeContainer>
+                        <AtributeContainer key={index}>
                           <AttributeTitle>
                             {attribute.name.toUpperCase()}
                           </AttributeTitle>
                           <AttributeValueList>
-                            {attribute.items.map((attrset) => {
+                            {attribute.items.map((attrset,attributeKey) => {
                               return (
-                                <AttributeValueContainer>
+                                <AttributeValueContainer key={attributeKey}>
                                   {attrset.value}
                                 </AttributeValueContainer>
                               );
@@ -253,7 +284,10 @@ class ProductPage extends Component {
                       selectedCurrencyPrice[0].amount}
                   </PriceAmount>
                 </PriceSection>
-                <AddToCartBtn>ADD TO CART</AddToCartBtn>
+                <AddToCartBtn onClick={()=>{
+                  console.log("pressed",product.id);
+                    this.props.addToCart(product.id)}
+                }>ADD TO CART</AddToCartBtn>
                 <Description
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
@@ -270,4 +304,10 @@ function withParams(Component) {
   return (props) => <Component {...props} params={useParams()} />;
 }
 
-export default withParams(ProductPage);
+const mapDispatchToProps = dispatch =>{
+  return {
+    addToCart: (id) => dispatch(addToCart(id)),
+    setProducts: data => dispatch(setProducts(data))
+  }
+}
+export default connect(null,mapDispatchToProps)(withParams(ProductPage));
