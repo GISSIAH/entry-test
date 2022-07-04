@@ -65,6 +65,20 @@ class Home extends Component {
     this.setState({ categoryMenu: !this.state.categoryMenu });
   };
   render() {
+    console.log(this.props.cartOpen);
+    const PageContainer = styled.div`
+      background: white;
+      z-index: 0px;
+    `;
+    const Overlay = styled.div`
+      position: fixed; /* Sit on top of the page content */
+      display: none; /* Hidden by default */
+      width: 1000px; /* Full width (cover the whole page) */
+      height: 700px; /* Full height (cover the whole page) */
+      background: red ;//rgba(57, 55, 72, 0.22);
+      //background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+      z-index: 100;
+    `;
     const CategoryMenu = styled.div`
       display: flex;
       flex-direction: column;
@@ -102,7 +116,11 @@ class Home extends Component {
       font-weight: 600;
     `;
     return (
-      <div>
+      <PageContainer 
+      //cartOpen={this.props.cartOpen}
+      >
+        {this.props.cartOpen ? <Overlay></Overlay> : null }
+        
         <CategoryMenu>
           <CategoryTitleWrapper>
             <CategoryTitle>{"Category : " + this.state.category}</CategoryTitle>
@@ -126,7 +144,7 @@ class Home extends Component {
           currency={this.props.currency}
           category={this.state.category}
         />
-      </div>
+      </PageContainer>
     );
   }
 }

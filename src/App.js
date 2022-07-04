@@ -17,6 +17,7 @@ export default class App extends Component {
     currency: {
       symbol: "$",
       currency: "USD",
+      cartOpen:false
     },
   };
   //store = configureStore(Reducer)
@@ -32,14 +33,14 @@ export default class App extends Component {
                 path="/"
                 element={
                   <div>
-                    <Navbar parentCallback={this.handleCallback} />
+                    <Navbar parentCallback={this.handleCallback} cartCallback={this.handleCartMenu} />
                     <Outlet />
                   </div>
                 }
               >
                 <Route
                   index
-                  element={<Home name="SKI" currency={this.state.currency} />}
+                  element={<Home name="SKI" currency={this.state.currency} cartOpen={this.state.cartOpen} />}
                 />
                 <Route
                   exact
@@ -57,4 +58,7 @@ export default class App extends Component {
   handleCallback = (childData) => {
     this.setState({ currency: childData });
   };
+  handleCartMenu = (open) => {
+    this.setState({cartOpen:open})
+  }
 }

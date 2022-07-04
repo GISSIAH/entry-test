@@ -90,8 +90,8 @@ class ProductPage extends Component {
   };
   render() {
     const PageContainer = styled.div`
-      padding-left: 170px;
-      padding-right: 170px;
+      padding-left: 50px;
+      padding-right: 50px;
       padding-top: 40px;
     `;
     const ProductContainer = styled.div`
@@ -104,6 +104,8 @@ class ProductPage extends Component {
       gap:70px;
       width: 500px;
       height: 500px;
+
+      
     `;
     const LargeImagePreview = styled.img`
       aspect-ratio: 1/1;
@@ -200,7 +202,7 @@ class ProductPage extends Component {
       font-size: 16px;
       font-weight: 600;
       &:hover {
-        background: gray;
+        background: #78DF93;
       }
     `;
     const Description = styled.p`
