@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import { changeQuantity, removeFromCart } from "../../redux/reducer/shopping/shopping-actions";
 class MiniCartItem extends Component {
   render() {
     const ItemContainer = styled.div`
       display: flex;
+      gap:10px;
     `;
     const DetailsContainer = styled.div`
       display: flex;
@@ -135,9 +138,21 @@ class MiniCartItem extends Component {
         </DetailsContainer>
         <RightWrapper>
           <QuantityControlContainer>
-            <QuantityControl>+</QuantityControl>
+            <QuantityControl onClick={() => {
+              this.props.changeQuantity(this.props.item.id, this.props.item.qty + 1)
+            }}
+            >
+              +
+            </QuantityControl>
             <p>{this.props.item.qty}</p>
-            <QuantityControl>-</QuantityControl>
+            <QuantityControl onClick={() => {
+              if (this.props.item.qty - 1 <= 0) {
+                this.props.removeFromCart(this.props.item.id);
+              } else {
+                this.props.changeQuantity(this.props.item.id, this.props.item.qty - 1)
+              }
+
+            }}>-</QuantityControl>
           </QuantityControlContainer>
           <ImageContainer>
             <ItemImage src={this.props.item.gallery[0]} />
@@ -148,4 +163,14 @@ class MiniCartItem extends Component {
   }
 }
 
-export default MiniCartItem;
+
+const mapStateToProps = (dispatch) => {
+  return {
+    changeQuantity: (id, value) => dispatch(changeQuantity(id, value)),
+    removeFromCart: (id) => dispatch(removeFromCart(id)),
+  };
+};
+export default connect(null, mapStateToProps)(MiniCartItem);
+
+
+

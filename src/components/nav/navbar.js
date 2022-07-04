@@ -12,6 +12,7 @@ import { RiArrowDropUpLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import MiniCartItem from "../mini-cart/miniCartItem";
+
 class Navbar extends Component {
   state = {
     currencyMenu: false,
@@ -126,6 +127,7 @@ class Navbar extends Component {
       flex-direction: column;
       background: white;
       right: 100px;
+      background:white ;
       z-index: 9999px;
       position: absolute;
       margin-top: 40px;
