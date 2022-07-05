@@ -32,3 +32,10 @@ export const changeQuantity = (itemId, value) => {
   };
 };
 
+export const getTotal = (payload)=>{
+  return{
+    type:actionTypes.GET_TOTAL,
+    payload
+  }
+}
+

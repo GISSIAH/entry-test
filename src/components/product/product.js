@@ -32,7 +32,7 @@ import { connect } from 'react-redux'
             //height:330px;
         `
         const AddToCart = styled.div`
-            z-index:999;
+            z-index:99;
             width:50px;
             display:flex;
             justify-content:center;

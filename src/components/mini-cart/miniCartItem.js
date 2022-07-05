@@ -6,7 +6,8 @@ class MiniCartItem extends Component {
   render() {
     const ItemContainer = styled.div`
       display: flex;
-      gap:10px;
+      justify-content:space-between ;
+      margin-bottom:20px ;
     `;
     const DetailsContainer = styled.div`
       display: flex;
@@ -61,6 +62,7 @@ class MiniCartItem extends Component {
     `;
     const RightWrapper = styled.div`
       display: flex;
+      gap:10px;
     `;
     const QuantityControlContainer = styled.div`
       display: flex;
@@ -84,7 +86,7 @@ class MiniCartItem extends Component {
     `;
     const ImageContainer = styled.div`
       display: flex;
-      width: auto;
+      width: fit-content;
       height: 180px;
     `;
     const ItemImage = styled.img`

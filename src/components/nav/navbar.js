@@ -39,6 +39,8 @@ class Navbar extends Component {
       name: "USD",
     });
     this.props.cartCallback(false);
+    
+    
   };
   selectCurrency = (name) => {
     this.props.parentCallback(name);
@@ -128,15 +130,17 @@ class Navbar extends Component {
       background: white;
       right: 100px;
       background:white ;
-      z-index: 9999px;
+      z-index: 9999;
       position: absolute;
       margin-top: 40px;
       width: 400px;
-      height: 500px;
+      //height: 500px;
       display: block;
       padding-left: 10px;
       padding-right: 10px;
-      box-shadow: 0 8px 8px -4px lightblue;
+      padding-bottom: 10px ;
+      box-shadow: 0 10px 13px -6px lightblue;
+
     `;
 
     const CartHeader = styled.div`
@@ -185,6 +189,8 @@ class Navbar extends Component {
       { title: "MEN" },
       { title: "KIDS" },
     ];
+
+    
     return (
       <NavWrapper>
         <NavLeftGroup>
@@ -258,14 +264,16 @@ class Navbar extends Component {
                 {this.props.cart.map((item, i) => {
                   return <MiniCartItem key={i} item={item} currency ={this.state.symbol} />;
                 })}
+                <TotalContainer><p style={{ fontWeight: 500 }}>Total:</p><p style={{ fontWeight: 700 }}>{this.state.symbol+""+this.props.getTotal(this.props.cart,this.state.symbol)}</p> </TotalContainer>
                 <ActionButtonsContainer>
                   <ViewButton
+                    
                     onClick={() => {
                       this.props.cartCallback(!this.state.cartMenu);
                       this.setState({ cartMenu: !this.state.cartMenu });
                     }}
                   >
-                    <Link to="/cart">View Bag</Link>
+                    <Link to="/cart" style={{textDecoration:"none",color:'black'}}>View Bag</Link>
                   </ViewButton>
                   <CheckButton
                     onClick={() => {
@@ -288,8 +296,22 @@ class Navbar extends Component {
 const mapStateToProps = (state) => {
   return {
     cart: state.shop.cart,
+    getTotal:calculateTotal
   };
 };
+
+function calculateTotal(items,currency){
+  var total = 0
+  items.forEach(element => {
+    const selectedCurrencyPrice = element.prices.filter(
+      (price) => price.currency.symbol === currency
+    );
+    const itemWithQty = selectedCurrencyPrice[0].amount * element.qty
+    total+= itemWithQty
+  });
+  return total
+}
+
 
 export default connect(mapStateToProps)(Navbar);
 
