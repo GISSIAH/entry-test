@@ -90,15 +90,18 @@ class MiniCartItem extends Component {
     const ItemImage = styled.img`
       aspect-ratio: 1/1;
     `;
+    const selectedCurrencyPrice = this.props.item.prices.filter(
+      (price) => price.currency.symbol === this.props.currency
+    );
     return (
       <ItemContainer>
         <DetailsContainer>
           <ItemText>{this.props.item.brand}</ItemText>
           <ItemText>{this.props.item.name}</ItemText>
           <ItemPrice>
-            {this.props.item.prices[0].currency.symbol +
+            {this.props.currency +
               "" +
-              this.props.item.prices[0].amount}
+              selectedCurrencyPrice[0].amount}
           </ItemPrice>
           <Attributes>
             {this.props.item.attributes.map((attribute) => {

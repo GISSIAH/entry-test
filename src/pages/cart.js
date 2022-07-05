@@ -27,7 +27,7 @@ class CartPage extends Component {
         <Header>CART</Header>
         <ItemList>
         {this.props.cart.map((cartItem, index) => {
-           return <CartPageItem product={cartItem} key={index} />;
+           return <CartPageItem product={cartItem} key={index} currency={this.props.currency} />;
           })}
         </ItemList>
       </PageContainer>

@@ -147,6 +147,9 @@ class CartPageItem extends Component {
       height: 36px;
       background: ${(props) => props.color};
     `;
+    const selectedCurrencyPrice = this.props.product.prices.filter(
+      (price) => price.currency.symbol === this.props.currency.symbol
+    );
     return (
       <CartPageItemContainer>
         <Divider />
@@ -154,7 +157,9 @@ class CartPageItem extends Component {
           <TextContainer>
             <ProductBrand>{this.props.product.brand}</ProductBrand>
             <ProductName>{this.props.product.name}</ProductName>
-            <PriceAmount>{this.props.product.price}</PriceAmount>
+            <PriceAmount>{selectedCurrencyPrice[0].currency.symbol +
+              " " +
+              selectedCurrencyPrice[0].amount}</PriceAmount>
             <Attributes>
               {this.props.product.attributes.map((attribute) => {
                 if (attribute.type === "swatch") {
@@ -241,7 +246,7 @@ class CartPageItem extends Component {
                 <ImageArrow
                   active={
                     this.state.currentImage ===
-                    this.props.product.gallery.length - 1
+                      this.props.product.gallery.length - 1
                       ? true
                       : false
                   }

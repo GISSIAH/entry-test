@@ -256,7 +256,7 @@ class Navbar extends Component {
                 </CartHeader>
 
                 {this.props.cart.map((item, i) => {
-                  return <MiniCartItem key={i} item={item} />;
+                  return <MiniCartItem key={i} item={item} currency ={this.state.symbol} />;
                 })}
                 <ActionButtonsContainer>
                   <ViewButton
