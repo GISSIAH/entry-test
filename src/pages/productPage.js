@@ -4,14 +4,15 @@ import styled from "styled-components";
 import { client } from "../api/apiClient";
 import { useParams } from "react-router-dom";
 //import { useDispatch, useSelector } from "react-redux";
-import {connect} from "react-redux"
+import { connect } from "react-redux"
 import { addToCart, setProducts } from "../redux/reducer/shopping/shopping-actions";
 class ProductPage extends Component {
   state = {
     product: [],
     selectedImage: "",
+    selectedAttr: []
   };
-  getAllProducts= async ()=>{
+  getAllProducts = async () => {
     const res = await client
       .query({
         query: gql`
@@ -41,10 +42,11 @@ class ProductPage extends Component {
         `,
       })
 
-      return  res
-      
-}
+    return res
+
+  }
   componentDidMount = () => {
+
     //const { id } = this.props
     client
       .query({
@@ -79,10 +81,11 @@ class ProductPage extends Component {
           product: [response.data.product],
           selectedImage: response.data.product.gallery[0],
         });
-        this.getAllProducts().then(res=>{
-           
+        this.getAllProducts().then(res => {
+
           this.props.setProducts(res.data.category.products)
-      })
+        })
+
       })
       .catch((err) => {
         alert(err);
@@ -93,10 +96,11 @@ class ProductPage extends Component {
       padding-left: 50px;
       padding-right: 50px;
       padding-top: 40px;
+
     `;
     const ProductContainer = styled.div`
       display: flex;
-      //justify-content: space-around;
+      justify-content: center;
       gap: 300px;
     `;
     const LeftWrapper = styled.div`
@@ -169,13 +173,22 @@ class ProductPage extends Component {
       height: fit-content;
       padding-left: 2px;
       padding-right: 2px;
-
       border: 2px solid;
+      cursor: pointer;
+      ${({ check }) => check && `
+      background: black;
+      color:white;
+      padding: 0px 2px 0px 2px;
+      `}
     `;
     const SwatchAttributeItem = styled.div`
       width: 36px;
       height: 36px;
+      cursor: pointer;
       background: ${(props) => props.color};
+      ${({ check }) => check && `
+      border:2px solid #5ECE7B;;
+      `}
     `;
     const PriceSection = styled.div`
       margin-top: 30px;
@@ -212,20 +225,17 @@ class ProductPage extends Component {
       font-weight: 400;
       font-family: "Roboto", sans-serif;
     `;
-
-    //const cart = useSelector((state)=>state)
     return (
       <PageContainer>
-        {this.state.product.map((product,i) => {
+        {this.state.product.map((product, i) => {
           const selectedCurrencyPrice = product.prices.filter(
             (price) => price.currency.symbol === this.props.currency.symbol
           );
-          //console.log(this.props.currency);
           return (
             <ProductContainer key={i}>
               <LeftWrapper>
                 <ThumbnailContainer>
-                  {product.gallery.map((img,key) => {
+                  {product.gallery.map((img, key) => {
                     return (
                       <ImageThumbanail
                         key={key}
@@ -246,7 +256,8 @@ class ProductPage extends Component {
                   <ProductName>{product.name}</ProductName>
                 </ProductDetailsTop>
                 <Attributes>
-                  {product.attributes.map((attribute,index) => {
+                  {product.attributes.map((attribute, index) => {
+
                     if (attribute.type === "swatch") {
                       return (
                         <AtributeContainer key={index}>
@@ -254,9 +265,25 @@ class ProductPage extends Component {
                             {attribute.name.toUpperCase()}
                           </AttributeTitle>
                           <AttributeValueList>
-                            {attribute.items.map((attrset,swatchKey) => {
+                            {attribute.items.map((attrset, swatchKey) => {
                               return (
                                 <SwatchAttributeItem
+                                  check={checkSelected({
+                                    name: attribute.name,
+                                    value: attrset.value
+                                  }, this.state.selectedAttr)}
+                                  onClick={() => {
+                                    const attr = {
+                                      name: attribute.name,
+                                      value: attrset.value
+                                    }
+                                    if (containsObject(attr, this.state.selectedAttr)) {
+                                      const tempArr = this.state.selectedAttr.map(attribute => attribute.name === attr.name ? attr : attribute)
+                                      this.setState({ selectedAttr: tempArr })
+                                    } else {
+                                      this.setState({ selectedAttr: [...this.state.selectedAttr, attr] })
+                                    }
+                                  }}
                                   color={attrset.value}
                                   key={swatchKey}
                                 ></SwatchAttributeItem>
@@ -272,9 +299,27 @@ class ProductPage extends Component {
                             {attribute.name.toUpperCase()}
                           </AttributeTitle>
                           <AttributeValueList>
-                            {attribute.items.map((attrset,attributeKey) => {
+                            {attribute.items.map((attrset, attributeKey) => {
                               return (
-                                <AttributeValueContainer key={attributeKey}>
+                                <AttributeValueContainer
+                                  onClick={() => {
+                                    const attr = {
+                                      name: attribute.name,
+                                      value: attrset.value
+                                    }
+                                    if (containsObject(attr, this.state.selectedAttr)) {
+                                      const tempArr = this.state.selectedAttr.map(attribute => attribute.name === attr.name ? attr : attribute)
+                                      this.setState({selectedAttr:tempArr})
+                                    } else {
+                                      this.setState({ selectedAttr: [...this.state.selectedAttr, attr] })
+                                    }
+                                  }}
+                                  key={attributeKey}
+                                  check={checkSelected({
+                                    name: attribute.name,
+                                    value: attrset.value
+                                  }, this.state.selectedAttr)}
+                                >
                                   {attrset.value}
                                 </AttributeValueContainer>
                               );
@@ -293,9 +338,10 @@ class ProductPage extends Component {
                       selectedCurrencyPrice[0].amount}
                   </PriceAmount>
                 </PriceSection>
-                <AddToCartBtn onClick={()=>{
-                  console.log("pressed",product.id);
-                    this.props.addToCart(product.id)}
+                <AddToCartBtn onClick={() => {
+                  console.log(this.state.selectedAttr);
+                  this.props.addToCart(product.id, this.state.selectedAttr)
+                }
                 }>ADD TO CART</AddToCartBtn>
                 <Description
                   dangerouslySetInnerHTML={{ __html: product.description }}
@@ -309,14 +355,35 @@ class ProductPage extends Component {
   }
 }
 
+function containsObject(obj, list) {
+  var i;
+  for (i = 0; i < list.length; i++) {
+    if (list[i].name === obj.name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkSelected(obj, list) {
+  var i;
+  for (i = 0; i < list.length; i++) {
+    if (list[i].value === obj.value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 function withParams(Component) {
   return (props) => <Component {...props} params={useParams()} />;
 }
 
-const mapDispatchToProps = dispatch =>{
+const mapDispatchToProps = dispatch => {
   return {
-    addToCart: (id) => dispatch(addToCart(id)),
+    addToCart: (id,attributes) => dispatch(addToCart(id,attributes)),
     setProducts: data => dispatch(setProducts(data))
   }
 }
-export default connect(null,mapDispatchToProps)(withParams(ProductPage));
+export default connect(null, mapDispatchToProps)(withParams(ProductPage));

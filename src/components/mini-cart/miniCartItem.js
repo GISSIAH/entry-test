@@ -3,6 +3,22 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { changeQuantity, removeFromCart } from "../../redux/reducer/shopping/shopping-actions";
 class MiniCartItem extends Component {
+
+  checkAttributeValue(field, value) {
+    var check
+    let attrLength = this.props.item.selectedAttributes.length
+    for (let i = 0; i < attrLength; i++) {
+      if (this.props.item.selectedAttributes[i].name === field && this.props.item.selectedAttributes[i].value === value) {
+        check = true
+        i = attrLength
+      } else {
+        continue
+      }
+    }
+
+    return check
+
+  }
   render() {
     const ItemContainer = styled.div`
       display: flex;
@@ -52,13 +68,20 @@ class MiniCartItem extends Component {
       height: fit-content;
       padding-left: 2px;
       padding-right: 2px;
-
       border: 2px solid;
+      ${({ check }) => check && `
+      background: black;
+      color:white;
+      padding: 0px 2px 0px 2px;
+      `}
     `;
     const SwatchAttributeItem = styled.div`
       width: 36px;
       height: 36px;
       background: ${(props) => props.color};
+      ${({ check }) => check && `
+      border:2px solid #5ECE7B;;
+      `}
     `;
     const RightWrapper = styled.div`
       display: flex;
@@ -115,6 +138,7 @@ class MiniCartItem extends Component {
                       {attribute.items.map((attrset) => {
                         return (
                           <SwatchAttributeItem
+                            check={this.checkAttributeValue(attribute.name, attrset.value)}
                             color={attrset.value}
                           ></SwatchAttributeItem>
                         );
@@ -129,7 +153,9 @@ class MiniCartItem extends Component {
                     <AttributeValueList>
                       {attribute.items.map((attrset) => {
                         return (
-                          <AttributeValueContainer>
+                          <AttributeValueContainer
+                            check={this.checkAttributeValue(attribute.name, attrset.value)}
+                          >
                             {attrset.value}
                           </AttributeValueContainer>
                         );

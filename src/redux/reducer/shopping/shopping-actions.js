@@ -4,11 +4,12 @@ export const setProducts = (payload) => ({
   type: actionTypes.SET_PRODUCTS,
   payload,
 });
-export const addToCart = (itemD) => {
+export const addToCart = (itemD,attributes) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
       id: itemD,
+      attributes:attributes
     },
   };
 };

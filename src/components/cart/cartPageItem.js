@@ -11,6 +11,22 @@ class CartPageItem extends Component {
     counter: 1,
     currentImage: 0,
   };
+
+  checkAttributeValue(field, value) {
+    var check
+    let attrLength = this.props.product.selectedAttributes.length
+    for (let i = 0; i < attrLength; i++) {
+      if (this.props.product.selectedAttributes[i].name === field && this.props.product.selectedAttributes[i].value === value) {
+        check = true
+        i = attrLength
+      } else {
+        continue
+      }
+    }
+
+    return check
+
+  }
   render() {
     const Divider = styled.hr`
       width: 100%;
@@ -133,19 +149,25 @@ class CartPageItem extends Component {
       display: flex;
       gap: 10px;
     `;
-    //non swatch
     const AttributeValueContainer = styled.div`
       width: fit-content;
       height: fit-content;
       padding-left: 2px;
       padding-right: 2px;
-
       border: 2px solid;
+      ${({ check }) => check && `
+      background: black;
+      color:white;
+      padding: 0px 2px 0px 2px;
+      `}
     `;
     const SwatchAttributeItem = styled.div`
       width: 36px;
       height: 36px;
       background: ${(props) => props.color};
+      ${({ check }) => check && `
+      border:2px solid #5ECE7B;;
+      `}
     `;
     const selectedCurrencyPrice = this.props.product.prices.filter(
       (price) => price.currency.symbol === this.props.currency.symbol
@@ -172,6 +194,7 @@ class CartPageItem extends Component {
                         {attribute.items.map((attrset) => {
                           return (
                             <SwatchAttributeItem
+                              check={this.checkAttributeValue(attribute.name, attrset.value)}
                               color={attrset.value}
                             ></SwatchAttributeItem>
                           );
@@ -188,7 +211,9 @@ class CartPageItem extends Component {
                       <AttributeValueList>
                         {attribute.items.map((attrset) => {
                           return (
-                            <AttributeValueContainer>
+                            <AttributeValueContainer
+                              check={this.checkAttributeValue(attribute.name, attrset.value)}
+                            >
                               {attrset.value}
                             </AttributeValueContainer>
                           );
