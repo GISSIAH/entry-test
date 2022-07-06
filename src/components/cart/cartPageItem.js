@@ -232,6 +232,7 @@ class CartPageItem extends Component {
                   //this.setState({ counter: this.state.counter + 1 });
                   this.props.changeQuantity(
                     this.props.product.id,
+                    this.props.product.selectedAttributes,
                     this.props.product.qty + 1
                   );
                 }}
@@ -242,10 +243,11 @@ class CartPageItem extends Component {
               <QuantityControl
                 onClick={() => {
                   if (this.props.product.qty - 1 <= 0) {
-                    this.props.removeFromCart(this.props.product.id);
+                    this.props.removeFromCart(this.props.product.id,this.props.product.selectedAttributes);
                   } else {
                     this.props.changeQuantity(
                       this.props.product.id,
+                      this.props.product.selectedAttributes,
                       this.props.product.qty - 1
                     );
                   }
@@ -303,8 +305,8 @@ class CartPageItem extends Component {
 
 const mapStateToProps = (dispatch) => {
   return {
-    changeQuantity: (id, value) => dispatch(changeQuantity(id, value)),
-    removeFromCart: (id) => dispatch(removeFromCart(id)),
+    changeQuantity: (id,attributes, value) => dispatch(changeQuantity(id,attributes, value)),
+    removeFromCart: (id,attributes) => dispatch(removeFromCart(id,attributes)),
   };
 };
 export default connect(null, mapStateToProps)(CartPageItem);

@@ -14,20 +14,22 @@ export const addToCart = (itemD,attributes) => {
   };
 };
 
-export const removeFromCart = (itemD) => {
+export const removeFromCart = (itemD,attributes) => {
   return {
     type: actionTypes.REMOVE_FROM_CART,
     payload: {
       id: itemD,
+      attributes:attributes
     },
   };
 };
 
-export const changeQuantity = (itemId, value) => {
+export const changeQuantity = (itemId,attributes, value) => {
   return {
     type: actionTypes.CHANGE_QUANITY,
     payload: {
       id: itemId,
+      attributes:attributes,
       qty: value,
     },
   };

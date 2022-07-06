@@ -170,7 +170,7 @@ class MiniCartItem extends Component {
         <RightWrapper>
           <QuantityControlContainer>
             <QuantityControl onClick={() => {
-              this.props.changeQuantity(this.props.item.id, this.props.item.qty + 1)
+              this.props.changeQuantity(this.props.item.id,this.props.item.selectedAttributes, this.props.item.qty + 1)
             }}
             >
               +
@@ -178,9 +178,9 @@ class MiniCartItem extends Component {
             <p>{this.props.item.qty}</p>
             <QuantityControl onClick={() => {
               if (this.props.item.qty - 1 <= 0) {
-                this.props.removeFromCart(this.props.item.id);
+                this.props.removeFromCart(this.props.item.id,this.props.item.selectedAttributes);
               } else {
-                this.props.changeQuantity(this.props.item.id, this.props.item.qty - 1)
+                this.props.changeQuantity(this.props.item.id,this.props.item.selectedAttributes, this.props.item.qty - 1)
               }
 
             }}>-</QuantityControl>
@@ -197,8 +197,8 @@ class MiniCartItem extends Component {
 
 const mapStateToProps = (dispatch) => {
   return {
-    changeQuantity: (id, value) => dispatch(changeQuantity(id, value)),
-    removeFromCart: (id) => dispatch(removeFromCart(id)),
+    changeQuantity: (id,attributes, value) => dispatch(changeQuantity(id,attributes, value)),
+    removeFromCart: (id, attributes) => dispatch(removeFromCart(id,attributes)),
   };
 };
 export default connect(null, mapStateToProps)(MiniCartItem);
