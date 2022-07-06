@@ -261,13 +261,12 @@ class Navbar extends Component {
                   </p>
                 </CartHeader>
 
-                {this.props.cart.map((item, i) => {
+                {this.props.cart.slice(0,2).map((item, i) => {
                   return <MiniCartItem key={i} item={item} currency ={this.state.symbol} />;
                 })}
                 <TotalContainer><p style={{ fontWeight: 500 }}>Total:</p><p style={{ fontWeight: 700 }}>{this.state.symbol+""+this.props.getTotal(this.props.cart,this.state.symbol)}</p> </TotalContainer>
                 <ActionButtonsContainer>
                   <ViewButton
-                    
                     onClick={() => {
                       this.props.cartCallback(!this.state.cartMenu);
                       this.setState({ cartMenu: !this.state.cartMenu });

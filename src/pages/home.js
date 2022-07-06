@@ -71,9 +71,6 @@ class Home extends Component {
     
       z-index: 0px;
     `;
-    
-    
-    
     const CategoryMenu = styled.div`
       display: flex;
       flex-direction: column;

@@ -1,51 +1,22 @@
-import { gql } from "@apollo/client";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { client } from "../../api/apiClient";
 import Product from "./product";
+import { getProducts } from "../../api/requests";
 export default class ProductList extends Component {
   state = {
-    clothes: [],
+    products: [],
     category: this.props.category,
   };
   componentDidMount = async () => {
     this.getProducts(this.props.category);
   };
   getProducts = async (category) => {
-    const response = await client.query({
-      query: gql`query GetClothes{
-                category(input: { title: "${category}" }) {
-                    name
-                    products {
-                    id
-                    name
-                    brand
-                    gallery
-                    prices {
-                        amount
-                        currency{
-                        symbol
-                        }
-                    }
-                    attributes{
-                        name,
-                        items{
-                          value
-                        }
-                      }
-                    }
-                }
-                }
-            `,
-    });
-
+    const response = await getProducts(category)
     this.setState({
-      clothes: response.data.category.products,
+      products: response.data.category.products,
     });
   };
   componentWillUpdate(nextProps, nextState) {
-    console.log(nextProps);
-    console.log(nextState);
     if (this.state.category !== nextProps.category) {
       this.getProducts(nextProps.category);
       this.setState({ category: nextProps.category });
@@ -63,8 +34,8 @@ export default class ProductList extends Component {
     `;
     return (
       <ProductList>
-        {this.state.clothes.map((cloth) => {
-          return <Product product={cloth} currency={this.props.currency} />;
+        {this.state.products.map((prod) => {
+          return <Product product={prod} currency={this.props.currency} />;
         })}
       </ProductList>
     );
