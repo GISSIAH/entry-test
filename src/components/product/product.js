@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import styled from "styled-components"
 import { FiShoppingCart } from "react-icons/fi"
+import { useNavigate } from 'react-router'
 import { addToCart } from '../../redux/reducer/shopping/shopping-actions'
 import { connect } from 'react-redux'
  class Product extends Component {
+    state={
+        redirect:false
+    }
+    componentDidMount=()=>{
+        
+    }
+    
     render() {
         const Product = styled.div`
             display: flex;
@@ -38,6 +45,7 @@ import { connect } from 'react-redux'
             justify-content:center;
             align-items:center ;
             height:50px;
+            cursor: pointer;
             border-radius:50%;
             background:#5ece7b;
         `
@@ -47,15 +55,26 @@ import { connect } from 'react-redux'
             padding-left: 10px;
         `
         const selectedCurrencyPrice = this.props.product.prices.filter(price => price.currency.symbol === this.props.currency.symbol)
-
+        
+       
         return (
-            <Link to={"/product/" + this.props.product.id} style={{ textDecoration: 'none', color: 'black' }}>
-                <Product>
+           
+                <Product onClick={()=>{
+                    this.props.navigate(`/product/${this.props.product.id}`,{replace:false})
+                }}>
                     <ProductImage src={this.props.product.gallery[0]} />
                     <ProductHead>
                         <ProductTitle>{this.props.product.name}</ProductTitle>
-                        <AddToCart onClick={()=>{
-                            this.props.addToCart(this.props.product.id)
+                        <AddToCart onClick={(e)=>{
+                            e.stopPropagation()
+                            var selectedAttr = []
+                            this.props.product.attributes.forEach(element => {
+                                selectedAttr.push({
+                                    name: element.name,
+                                    value: element.items[0].value
+                                })
+                            });
+                            this.props.addToCart(this.props.product.id,selectedAttr)
                         }}>
                             <FiShoppingCart size={28} color="white" />
                         </AddToCart>
@@ -64,14 +83,17 @@ import { connect } from 'react-redux'
 
                     <ProductPrice>{selectedCurrencyPrice[0].currency.symbol + " " + selectedCurrencyPrice[0].amount}</ProductPrice>
                 </Product>
-            </Link>
+     
         )
     }
+}
+function withParams(Component) {
+    return (props) => <Component {...props} navigate={useNavigate()} />;
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addToCart: (id) => dispatch(addToCart(id))
+        addToCart: (id,attributes) => dispatch(addToCart(id,attributes))
     }
 }
-export default connect(null, mapDispatchToProps)(Product);
+export default connect(null, mapDispatchToProps)(withParams(Product));

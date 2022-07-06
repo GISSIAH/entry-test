@@ -9,7 +9,6 @@ export default class ProductList extends Component {
     category: this.props.category,
   };
   componentDidMount = async () => {
-    console.log(this.props.category);
     this.getProducts(this.props.category);
   };
   getProducts = async (category) => {
@@ -28,6 +27,12 @@ export default class ProductList extends Component {
                         symbol
                         }
                     }
+                    attributes{
+                        name,
+                        items{
+                          value
+                        }
+                      }
                     }
                 }
                 }
@@ -42,7 +47,6 @@ export default class ProductList extends Component {
     console.log(nextProps);
     console.log(nextState);
     if (this.state.category !== nextProps.category) {
-      console.log(false);
       this.getProducts(nextProps.category);
       this.setState({ category: nextProps.category });
     }
