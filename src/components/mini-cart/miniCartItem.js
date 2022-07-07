@@ -22,7 +22,6 @@ class MiniCartItem extends Component {
   render() {
     const ItemContainer = styled.div`
       display: flex;
-      justify-content:space-between ;
       margin-bottom:20px ;
     `;
     const DetailsContainer = styled.div`
@@ -85,7 +84,8 @@ class MiniCartItem extends Component {
     `;
     const RightWrapper = styled.div`
       display: flex;
-      gap:10px;
+      gap:0px;
+      width:50% ;
     `;
     const QuantityControlContainer = styled.div`
       display: flex;
@@ -113,7 +113,7 @@ class MiniCartItem extends Component {
       height: 180px;
     `;
     const ItemImage = styled.img`
-      aspect-ratio: 1/1;
+      aspect-ratio: 4/5;
     `;
     const selectedCurrencyPrice = this.props.item.prices.filter(
       (price) => price.currency.symbol === this.props.currency

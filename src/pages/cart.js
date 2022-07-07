@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { PageContainer,Header,ItemList,CheckoutItemContainer,OrderButton } from "../components/cart/cartPageStyles";
 import CartPageItem from "../components/cart/cartPageItem";
-
+import { calculateQty, calculateTotal } from "../redux/helpers/helper";
 class CartPage extends Component {
   render() {
     const total = this.props.getTotal(this.props.cart, this.props.currency.symbol)
@@ -40,27 +40,4 @@ const mapStateToProps = (state) => {
     getQtyTotal: calculateQty
   };
 };
-
-function calculateTotal(items, currency) {
-  var total = 0
-  items.forEach(element => {
-    const selectedCurrencyPrice = element.prices.filter(
-      (price) => price.currency.symbol === currency
-    );
-    const itemWithQty = selectedCurrencyPrice[0].amount * element.qty
-    total += itemWithQty
-
-  });
-  return total
-}
-
-function calculateQty(item){
-  var qty = 0
-  item.forEach(element=>{
-    qty += element.qty
-  })
-  return qty
-}
-
-
 export default connect(mapStateToProps)(CartPage);

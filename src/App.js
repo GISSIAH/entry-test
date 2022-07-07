@@ -6,12 +6,9 @@ import Home from "./pages/home";
 import { client } from "./api/apiClient";
 import Navbar from "./components/nav/navbar";
 import ProductPage from "./pages/productPage";
-
 import { Provider } from "react-redux";
 import CartPage from "./pages/cart";
-
 import store from './redux/store/store';
-
 export default class App extends Component {
   state = {
     currency: {
@@ -20,10 +17,7 @@ export default class App extends Component {
       cartOpen:false
     },
   };
-  //store = configureStore(Reducer)
   render() {
-    //console.log(this.state.currency);
-
     return (
       <Provider store={store}>
         <ApolloProvider client={client}>
