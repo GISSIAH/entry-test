@@ -8,10 +8,6 @@ import { connect } from 'react-redux'
     state={
         redirect:false
     }
-    componentDidMount=()=>{
-        
-    }
-    
     render() {
         const AddToCart = styled.div`
             display: none ;
@@ -24,7 +20,6 @@ import { connect } from 'react-redux'
             &:hover{
                box-shadow: rgba(0, 0, 0, 0.35) 1px 5px 15px; 
             }
-
             &:hover ${AddToCart} {
                 z-index:99;
             width:50px;
@@ -36,12 +31,10 @@ import { connect } from 'react-redux'
             border-radius:50%;
             background:#5ece7b;
             }
-
         `
         const ProductHead = styled.div`
             display:flex;
             justify-content:space-between;
-
         `
         const ProductTitle = styled.p`
             font-weight:300;
@@ -50,20 +43,14 @@ import { connect } from 'react-redux'
         `
         const ProductImage = styled.img`
             aspect-ratio: 1 / 1;
-            //width:100%;
-            //height:330px;
-        `
-        
+        `  
         const ProductPrice = styled.p`
             font-weight:500;
             font-size:18px ;
             padding-left: 10px;
         `
         const selectedCurrencyPrice = this.props.product.prices.filter(price => price.currency.symbol === this.props.currency.symbol)
-        
-       
-        return (
-           
+        return (  
                 <Product onClick={()=>{
                     this.props.navigate(`/product/${this.props.product.id}`,{replace:false})
                 }}>
