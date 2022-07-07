@@ -13,6 +13,9 @@ import { connect } from 'react-redux'
     }
     
     render() {
+        const AddToCart = styled.div`
+            display: none ;
+        `
         const Product = styled.div`
             display: flex;
             flex-direction: column;
@@ -20,6 +23,18 @@ import { connect } from 'react-redux'
             padding:1 5px ;
             &:hover{
                box-shadow: rgba(0, 0, 0, 0.35) 1px 5px 15px; 
+            }
+
+            &:hover ${AddToCart} {
+                z-index:99;
+            width:50px;
+            display:flex;
+            justify-content:center;
+            align-items:center ;
+            height:50px;
+            cursor: pointer;
+            border-radius:50%;
+            background:#5ece7b;
             }
 
         `
@@ -38,17 +53,7 @@ import { connect } from 'react-redux'
             //width:100%;
             //height:330px;
         `
-        const AddToCart = styled.div`
-            z-index:99;
-            width:50px;
-            display:flex;
-            justify-content:center;
-            align-items:center ;
-            height:50px;
-            cursor: pointer;
-            border-radius:50%;
-            background:#5ece7b;
-        `
+        
         const ProductPrice = styled.p`
             font-weight:500;
             font-size:18px ;
@@ -65,7 +70,7 @@ import { connect } from 'react-redux'
                     <ProductImage src={this.props.product.gallery[0]} />
                     <ProductHead>
                         <ProductTitle>{this.props.product.name}</ProductTitle>
-                        <AddToCart onClick={(e)=>{
+                        <AddToCart title='Add to Cart' onClick={(e)=>{
                             e.stopPropagation()
                             var selectedAttr = []
                             this.props.product.attributes.forEach(element => {

@@ -139,7 +139,7 @@ class ProductPage extends Component {
                       selectedCurrencyPrice[0].amount}
                   </PriceAmount>
                 </PriceSection>
-                <AddToCartBtn onClick={() => {
+                <AddToCartBtn title="Add to Cart" onClick={() => {
                   this.props.addToCart(product.id, this.state.selectedAttr)
                 }
                 }>ADD TO CART</AddToCartBtn>

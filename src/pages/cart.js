@@ -1,45 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import { PageContainer,Header,ItemList,CheckoutItemContainer,OrderButton } from "../components/cart/cartPageStyles";
 import CartPageItem from "../components/cart/cartPageItem";
 
 class CartPage extends Component {
   render() {
-  
-    const PageContainer = styled.div`
-      padding-left: 170px;
-      padding-right: 170px;
-      padding-top: 40px;
-    `;
-    const Header = styled.h1`
-      font-weight: 700;
-      font-size: 42px;
-    `;
-
-    const ItemList = styled.div`
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    `;
-
-    const CheckoutItemContainer = styled.div`
-      display:flex;
-      gap:10px;
-    `
-    const OrderButton = styled.button`
-    margin-top:20px ;
-      cursor: pointer;
-      background: #5ece7b;
-      height: 30px;
-      border: none;
-      color: white;
-      width: 120px;
-      font-size: 16px;
-      font-weight: 600;
-      &:hover {
-        background: #78df93;
-      }
-    `;
     const total = this.props.getTotal(this.props.cart, this.props.currency.symbol)
     return (
       <PageContainer>
@@ -61,14 +26,13 @@ class CartPage extends Component {
           <p style={{fontWeight:400}}>Total:</p>
           <p style={{fontWeight:700}}>{this.props.currency.symbol + "" + total}</p>
         </CheckoutItemContainer>
-        <OrderButton>
+        <OrderButton title="Order">
           Order
         </OrderButton>
       </PageContainer>
     );
   }
 }
-
 const mapStateToProps = (state) => {
   return {
     cart: state.shop.cart,

@@ -33,18 +33,31 @@ class Navbar extends Component {
       name: "JPY",
     },
   ];
+  constructor(props){
+    super(props)
+    this.wrapperRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
   componentDidMount = () => {
     this.props.parentCallback({
       symbol: "$",
       name: "USD",
     });
     this.props.cartCallback(false);
-    
+    document.addEventListener("mousedown", this.handleClickOutside);
     
   };
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
   selectCurrency = (name) => {
     this.props.parentCallback(name);
   };
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+      this.setState({ currencyMenu: !this.state.currencyMenu, });
+    }
+  }
   handleDropDown = () => {
     this.setState({ currencyMenu: !this.state.currencyMenu });
   };
@@ -217,7 +230,7 @@ class Navbar extends Component {
               )}
             </div>
             {this.state.currencyMenu ? (
-              <CurrencyListContainer>
+              <CurrencyListContainer ref={this.wrapperRef}>
                 {this.currencies.map((item, navMenuKey) => {
                   return (
                     <CurrencyListItemContainer
@@ -245,6 +258,7 @@ class Navbar extends Component {
             <CartIconContainer
               onClick={() => {
                 this.props.cartCallback(!this.state.cartMenu);
+                
                 this.setState({ cartMenu: !this.state.cartMenu });
               }}
             >
@@ -266,7 +280,7 @@ class Navbar extends Component {
                 })}
                 <TotalContainer><p style={{ fontWeight: 500 }}>Total:</p><p style={{ fontWeight: 700 }}>{this.state.symbol+""+this.props.getTotal(this.props.cart,this.state.symbol)}</p> </TotalContainer>
                 <ActionButtonsContainer>
-                  <ViewButton
+                  <ViewButton title="View Cart"
                     onClick={() => {
                       this.props.cartCallback(!this.state.cartMenu);
                       this.setState({ cartMenu: !this.state.cartMenu });
@@ -274,7 +288,7 @@ class Navbar extends Component {
                   >
                     <Link to="/cart" style={{textDecoration:"none",color:'black'}}>View Bag</Link>
                   </ViewButton>
-                  <CheckButton
+                  <CheckButton title="Checkout"
                     onClick={() => {
                       this.props.cartCallback(!this.state.cartMenu);
                       this.setState({ cartMenu: !this.state.cartMenu });
