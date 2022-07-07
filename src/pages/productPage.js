@@ -12,9 +12,17 @@ class ProductPage extends Component {
   };
   componentDidMount = () => {
     getProduct(this.props.params.id).then((response) => {
+      var selectedDefaults = []
+      response.data.product.attributes.forEach(element => {
+        selectedDefaults.push({
+          name: element.name,
+          value: element.items[0].value
+        })
+      });
       this.setState({
         product: [response.data.product],
         selectedImage: response.data.product.gallery[0],
+        selectedAttr: selectedDefaults
       });
       getAllProducts().then(res => {
         this.props.setProducts(res.data.category.products)
